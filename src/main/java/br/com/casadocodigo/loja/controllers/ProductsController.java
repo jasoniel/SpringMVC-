@@ -29,20 +29,11 @@ public class ProductsController {
 	private ProductDAO productDAO ;
 	
 	
-	@RequestMapping("/form")
-	public ModelAndView form(){
-		
-		ModelAndView modelAndView = new ModelAndView("products/form");
-		modelAndView.addObject("types",BookType.values());
-		
-		return modelAndView;
-	}
-	
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView list(){
 		
 		ModelAndView modelAndView = new ModelAndView("products/list");
-		modelAndView.addObject("products",productDAO.list());
+		modelAndView.addObject("products", productDAO.list());
 		
 		return modelAndView;
 		
@@ -50,13 +41,11 @@ public class ProductsController {
 	
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ModelAndView save(@Valid Product product, RedirectAttributes redirectAttributes,BindingResult bindingResult){
-		System.out.println("encontrei um erro1!");
+	public ModelAndView save(@Valid Product product, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+		
 
 		if(bindingResult.hasErrors()){
-			
-			System.out.println("encontrei um erro!");
-			return form();
+			return form(product);
 		}
 		
 		productDAO.save(product);
@@ -64,6 +53,19 @@ public class ProductsController {
 		
 		return new ModelAndView("redirect:produtos");
 	}
+	
+	
+
+	@RequestMapping("/form")
+	public ModelAndView form(Product product){
+		
+		ModelAndView modelAndView = new ModelAndView("products/form");
+		modelAndView.addObject("types",BookType.values());
+		
+		return modelAndView;
+	}
+	
+	
 	
 	@InitBinder
 	protected void initBinder(WebDataBinder binder){
