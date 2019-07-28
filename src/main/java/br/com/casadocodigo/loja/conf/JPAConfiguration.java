@@ -13,54 +13,64 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
- 
+
+
 @EnableTransactionManagement
 public class JPAConfiguration {
+
 	
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		
 		em.setDataSource(dataSource());
-		em.setPackagesToScan(new String[]{"br.com.casadocodigo.loja.models" });
-		
+		em.setPackagesToScan(new String[] {"br.com.casadocodigo.loja.models"});
 		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setJpaProperties(additionalProperties());
-		
-		
 		return em;
 	}
 	
 	@Bean
-	public DataSource dataSource(){
+	public DataSource dataSource() {
 		
+		/*
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/casadocodigo");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/casadocodigo");
 		dataSource.setUsername("root");
-		dataSource.setPassword("root");
+		dataSource.setPassword("root"); */
 		
+		 DriverManagerDataSource dataSource = new DriverManagerDataSource();
+	        dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+	        // Desenvolvimento
+	        dataSource.setUrl("jdbc:sqlserver://localhost:1433;databaseName=casadocodigo");
+	        dataSource.setUsername("sa");
+	        dataSource.setPassword("@jaSO5833");
 		return dataSource;
-		 
 	}
+	
 	@Bean
-	private Properties additionalProperties(){
-		
-		Properties properties = new Properties();
-		properties.setProperty("hibernate.hbm2ddl.auto", "update");
-		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		properties.setProperty("hibernate.show_sql","true");
-		
-		return properties;
-	}
-	@Bean
-	public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
 		
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
+		
 		return transactionManager;
 	}
+	
+	@Bean
+	private Properties additionalProperties() {
+		
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		//properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLServerDialect");
+		properties.setProperty("hibernate.show_sql", "true");
+		
+		return properties;
+		
+	}
+	
 }
