@@ -5,10 +5,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import br.com.casadocodigo.loja.models.Product;
+import br.com.casadocodigo.loja.validation.ProductValidator;
 
 @Repository
 @Transactional
@@ -17,8 +22,8 @@ public class ProductDAO {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-
-	public void save(Product product ) {
+	
+	public void save(@Valid Product product ) {
 		entityManager.persist(product);
 	}
 
