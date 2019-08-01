@@ -19,6 +19,7 @@
 		<tr>
 			<td>Titulo</td>
 			<td>Valores</td>
+			<td>Sumario</td>
 		</tr>
 		
 		<c:forEach items="${products}" var="product">
@@ -28,6 +29,9 @@
 					<c:forEach items="${product.prices}" var="price">
 						[ ${price.value} - ${price.bookType} ]
 					</c:forEach>
+				</td>
+				<td>
+					<a href="${product.summaryPath}">Sumário</a>
 				</td>
 			</tr>
 		</c:forEach>

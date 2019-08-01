@@ -17,7 +17,6 @@ public class ProductValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		// TODO Auto-generated method stub
-		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "field.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "field.required");
 		

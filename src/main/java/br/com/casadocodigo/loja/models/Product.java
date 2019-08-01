@@ -37,6 +37,9 @@ public class Product {
 	@DateTimeFormat(iso = ISO.DATE)
 	private Calendar releaseDate;
 
+	private String summaryPath;
+	
+	
 	public Product() {
 	}
 
@@ -87,5 +90,16 @@ public class Product {
 	public Calendar getReleaseDate() {
 		return releaseDate;
 	}
+
+	public String getSummaryPath() {
+		return summaryPath;
+	}
+
+	public void setSummaryPath(String summaryPath) {
+		this.summaryPath = summaryPath;
+	}
+	
+	
+	
 
 }
