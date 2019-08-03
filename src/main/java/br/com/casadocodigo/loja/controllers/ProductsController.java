@@ -2,6 +2,7 @@ package br.com.casadocodigo.loja.controllers;
 
 
 import javax.servlet.http.Part;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,7 @@ import br.com.casadocodigo.loja.validation.ProductValidator;
 
 @Controller
 @RequestMapping("/produtos")
+@Transactional
 public class ProductsController {
 
 	@Autowired
@@ -74,5 +77,15 @@ public class ProductsController {
 		
 		model.addAttribute("products", productDAO.list());
 		return "products/list";
+	}
+	
+	@RequestMapping("/{id}")
+	public ModelAndView show(@PathVariable Integer id) {
+		
+		ModelAndView modelAndView = new ModelAndView("products/show");
+		
+		Product product = productDAO.find(id);
+		modelAndView.addObject("product",product);
+		return modelAndView;
 	}
 }

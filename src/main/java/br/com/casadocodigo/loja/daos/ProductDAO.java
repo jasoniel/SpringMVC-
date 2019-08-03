@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -30,7 +31,16 @@ public class ProductDAO {
 
 	public List<Product> list() {
 		// TODO Auto-generated method stub
-		return entityManager.createQuery("select p from Product p join fetch p.prices",Product.class)
+		return entityManager.createQuery("select p from Product p",Product.class)
 				.getResultList();
+	}
+	
+	
+	public Product find(Integer id) {
+		TypedQuery<Product> query = entityManager
+				.createQuery(
+						"select p from Product p join fetch p.prices where p.id=:id",
+						Product.class).setParameter("id", id);
+		return query.getSingleResult();
 	}
 }

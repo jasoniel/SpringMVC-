@@ -1,11 +1,13 @@
 package br.com.casadocodigo.loja.models;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +33,7 @@ public class Product {
 	@Min(30)
 	private int pages;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	private List<Price> prices = new ArrayList<Price>();
 
 	@DateTimeFormat(iso = ISO.DATE)
@@ -99,7 +101,12 @@ public class Product {
 		this.summaryPath = summaryPath;
 	}
 	
-	
+	public BigDecimal priceFor(BookType bookType) {
+		return prices
+				.stream()
+				.filter(price -> price.getBookType().equals(bookType))
+				.findFirst().get().getValue();
+	}
 	
 
 }
